@@ -1,0 +1,14 @@
+data:
+    name: iris
+    path: /data
+
+model:
+    name: iris_classifier
+    penalty: l2
+    tol: 1e-4
+    C: 1.0
+    fit_intercept: True
+    max_iter: 500
+
+infer:
+  save_file: predictions.csv
