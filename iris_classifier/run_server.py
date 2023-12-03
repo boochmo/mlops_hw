@@ -6,10 +6,9 @@ import requests
 from dvc.api import DVCFileSystem
 from omegaconf import DictConfig
 
+
 @hydra.main(config_path="conf", config_name="config", version_base="1.3")
 def main(cfg: DictConfig):
-    filename = f"{cfg['data']['name']}.sav"
-
     PATH = cfg["data"]["path"]
     if os.path.isfile(f".{PATH}/test.csv"):
         os.remove(f".{PATH}/test.csv")
@@ -30,5 +29,6 @@ def main(cfg: DictConfig):
     response = requests.post(url, json=json_data)
     print(f"\nPredictions:\n${response.json()}")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
