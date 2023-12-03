@@ -18,6 +18,9 @@ onnxruntime = "^1.16.3"
 mlflow = "^2.8.1"
 skl2onnx = "^1.15.0"
 matplotlib = "^3.8.2"
+dvc-gdrive = "^2.20.0"
+setuptools = "59.7.0"
+pydantic = "1.10.11"
 
 [tool.isort]
 src_paths = ["iris_classifier"]

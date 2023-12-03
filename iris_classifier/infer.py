@@ -11,7 +11,7 @@ from sklearn.metrics import classification_report
 @hydra.main(config_path="conf", config_name="config", version_base="1.3")
 def infer(cfg: DictConfig):
     filename = f"{cfg['train']['name']}.sav"
-    model = joblib.load(filename)
+    lr_model = joblib.load(filename)
 
     PATH = cfg["data"]["path"]
     if os.path.isfile(f".{PATH}/test.csv"):
@@ -24,7 +24,7 @@ def infer(cfg: DictConfig):
     columns = ["Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"]
     test_X = test[columns]
     test_y = test.Species
-    preds = model.predict(test_X)
+    preds = lr_model.predict(test_X)
 
     print(classification_report(test_y, preds))
 

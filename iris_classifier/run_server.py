@@ -20,7 +20,7 @@ def main(cfg: DictConfig):
     columns = ["Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"]
     X_test = test[columns]
 
-    url = f"{cfg['infer']['mlflow_server']}"
+    url = f"{cfg['infer']['mlflow_server']}/invocations"
 
     # Create dictionary with pandas DataFrame in the split orientation
     json_data = {"dataframe_split": X_test.to_dict(orient="split")}

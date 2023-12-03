@@ -50,11 +50,11 @@ def train(cfg: DictConfig):
     X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.33)
 
     params = cfg["model"]
-    model = LogisticRegression(**params)
+    lr_model = LogisticRegression(**params)
 
-    model.fit(X_train, y_train)
-    y_score = model.predict_proba(X_val)
-    y_pred = model.predict(X_val)
+    lr_model.fit(X_train, y_train)
+    y_score = lr_model.predict_proba(X_val)
+    y_pred = lr_model.predict(X_val)
 
     label_binarizer = LabelBinarizer().fit(y_train)
     fpr, tpr, roc_auc = dict(), dict(), dict()
@@ -98,7 +98,7 @@ def train(cfg: DictConfig):
     logloss = log_loss(y_val, y_score)
 
     # feature importance
-    coefficients = model.coef_
+    coefficients = lr_model.coef_
     avg_importance = np.mean(np.abs(coefficients), axis=0)
     feature_importance = pd.DataFrame(
         {"Feature": X.columns, "Importance": avg_importance}
@@ -119,7 +119,7 @@ def train(cfg: DictConfig):
     plt.savefig("val_confusion_matrix.png")
 
     initial_type = [("float_input", FloatTensorType([None, 4]))]
-    onx_model = convert_sklearn(model, initial_types=initial_type)
+    onx_model = convert_sklearn(lr_model, initial_types=initial_type)
 
     with open("logreg_iris.onnx", "wb") as f:
         f.write(onx_model.SerializeToString())
@@ -158,7 +158,7 @@ def train(cfg: DictConfig):
         mlflow.onnx.log_model(onnx_model, "model", signature=signature)
 
     filename = f"{cfg['train']['name']}.sav"
-    joblib.dump(model, filename)
+    joblib.dump(lr_model, filename)
 
 
 if __name__ == "__main__":
