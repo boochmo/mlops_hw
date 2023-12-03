@@ -1,17 +1,12 @@
-import os
-
 import hydra
-import joblib
 import pandas as pd
+import requests
 from dvc.api import DVCFileSystem
 from omegaconf import DictConfig
-from sklearn.metrics import classification_report
-
 
 @hydra.main(config_path="conf", config_name="config", version_base="1.3")
-def infer(cfg: DictConfig):
-    filename = f"{cfg['train']['name']}.sav"
-    model = joblib.load(filename)
+def main(cfg: DictConfig):
+    filename = f"{cfg['data']['name']}.sav"
 
     PATH = cfg["data"]["path"]
     if os.path.isfile(f".{PATH}/test.csv"):
@@ -22,17 +17,16 @@ def infer(cfg: DictConfig):
     test = pd.read_csv(f".{PATH}/test.csv")
 
     columns = ["Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"]
-    test_X = test[columns]
-    test_y = test.Species
-    preds = model.predict(test_X)
+    X_test = test[columns]
 
-    print(classification_report(test_y, preds))
+    url = f"{cfg['infer']['mlflow_server']}"
 
-    preds = pd.DataFrame(preds)
-    pd.DataFrame(preds).to_csv(
-        cfg["infer"]["save_file"], sep=",", header=False, encoding="utf-8"
-    )
+    # Create dictionary with pandas DataFrame in the split orientation
+    json_data = {"dataframe_split": X_test.to_dict(orient="split")}
 
+    # Score model
+    response = requests.post(url, json=json_data)
+    print(f"\nPredictions:\n${response.json()}")
 
-if __name__ == "__main__":
-    infer()
+if __name__ == '__main__':
+    main()
