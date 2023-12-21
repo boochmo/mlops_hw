@@ -119,14 +119,18 @@ def train(cfg: DictConfig):
     plt.savefig("val_confusion_matrix.png")
 
     initial_type = [("float_input", FloatTensorType([None, 4]))]
-    onx_model = convert_sklearn(lr_model, initial_types=initial_type)
+    options = {id(lr_model): {"zipmap": False}}
+    onx_model = convert_sklearn(lr_model, options=options, initial_types=initial_type)
 
-    with open("logreg_iris.onnx", "wb") as f:
+    with open("./model.onnx", "wb") as f:
         f.write(onx_model.SerializeToString())
 
-    onnx_model = onnx.load_model("logreg_iris.onnx")
+    onnx_model = onnx.load_model(
+        "./model.onnx"
+    )
     sess = rt.InferenceSession(
-        "logreg_iris.onnx", providers=rt.get_available_providers()
+        "./model.onnx",
+        providers=rt.get_available_providers(),
     )
 
     input_name = sess.get_inputs()[0].name

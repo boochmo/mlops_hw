@@ -21,6 +21,7 @@ matplotlib = "^3.8.2"
 dvc-gdrive = "^2.20.0"
 setuptools = "59.7.0"
 pydantic = "1.10.11"
+tritonclient = {extras = ["http"], version = "^2.41.0"}
 
 [tool.isort]
 src_paths = ["iris_classifier"]
