@@ -125,9 +125,7 @@ def train(cfg: DictConfig):
     with open("./model.onnx", "wb") as f:
         f.write(onx_model.SerializeToString())
 
-    onnx_model = onnx.load_model(
-        "./model.onnx"
-    )
+    onnx_model = onnx.load_model("./model.onnx")
     sess = rt.InferenceSession(
         "./model.onnx",
         providers=rt.get_available_providers(),
