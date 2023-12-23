@@ -122,7 +122,7 @@ docker-compose up
 папки!)
 
 ```
-python cleint.py
+python client.py
 ```
 
 Если тесты пройдут гладко, будет выведен результат выполненого запроса.
