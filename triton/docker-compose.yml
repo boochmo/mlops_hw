@@ -1,6 +1,6 @@
 version: "3.8"
 services:
-  ndk_iris_classifier_service:
+  nk_iris_classifier_service:
     command: ["--model-repository=/models", "--log-info=1"]
     build: .
     shm_size: "256mb"

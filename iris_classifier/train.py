@@ -119,8 +119,7 @@ def train(cfg: DictConfig):
     plt.savefig("val_confusion_matrix.png")
 
     initial_type = [("float_input", FloatTensorType([None, 4]))]
-    options = {id(lr_model): {"zipmap": False}}
-    onx_model = convert_sklearn(lr_model, options=options, initial_types=initial_type)
+    onx_model = convert_sklearn(lr_model, initial_types=initial_type)
 
     with open("./model.onnx", "wb") as f:
         f.write(onx_model.SerializeToString())

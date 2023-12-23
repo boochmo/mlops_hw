@@ -24,7 +24,7 @@ def main(cfg: DictConfig):
 
     # Create dictionary with pandas DataFrame in the split orientation
     json_data = {"dataframe_split": X_test.to_dict(orient="split")}
-
+    print(json_data)
     # Score model
     response = requests.post(url, json=json_data)
     print(f"\nPredictions:\n${response.json()}")
