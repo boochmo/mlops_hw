@@ -87,7 +87,7 @@ triton
 └─── model_repository
     └─── iris_classifier
         └───1
-        │   | model.onnx.dvc
+        │   └─── model.onnx.dvc
         └── config.pbtxt
 
 ```
@@ -138,11 +138,11 @@ python cleint.py
 - Описание структуры model_repository: .
 - Метрики
   - До оптимизации
-    - throughput: 23900.5
-    - latency: 299
+    - throughput: 23900.5 infer/sec
+    - latency: 299 usec
   - После оптимизации
-    - throughput: 25227.4
-    - latency: 316
+    - throughput: 25227.4 infer/sec
+    - latency: 316 usec
 - Объяснение мотивации и выбора: как на семинаре, бинарным поиском сходился к
   оптимальной задержке в динамическом батчинге. Метрики показали, что 1 мс -
   оптимально (самый большой throughput и небольшое увеличение latency.
